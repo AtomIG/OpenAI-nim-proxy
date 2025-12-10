@@ -96,9 +96,9 @@ app.post('/v1/chat/completions', async (req, res) => {
       model: nimModel,
       messages: messages,
       temperature: temperature || 0.6,
-      max_tokens: max_tokens || 0,
+      max_tokens: max_tokens || 9024,
       extra_body: ENABLE_THINKING_MODE ? { chat_template_kwargs: { thinking: true } } : undefined,
-      stream: true
+      stream: stream ? 'stream' : 'json'
     };
     
     // Make request to NVIDIA NIM API
@@ -110,7 +110,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       responseType: 'stream'
     });
     
-    if (true) {
+    if (stream) {
       // Handle streaming response with reasoning
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
